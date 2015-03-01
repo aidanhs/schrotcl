@@ -54,6 +54,6 @@ bytecode (note that point 1 only became true in Tcl 8.6 (I believe) so this
 code won't work before then).
 
 Using these three pieces of information we can dig up the bytecode and see if
-the next thing Tcl does with the value is throw it away - if so, it's either
-being thrown away (so it doesn't matter what we return) or it gets printed on
-the repl!
+the next thing Tcl does with the value is return it - if so, and we're at the
+top level of the stack and there are no recursive evals, we're returning to
+something wrapping Tcl - probably the REPL!

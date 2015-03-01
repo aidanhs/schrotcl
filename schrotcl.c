@@ -49,13 +49,13 @@ schrocmd(
 	const unsigned char *nextPc = pc + numbytes;
 	unsigned char nextOpCode = *nextPc;
 
-	// If the next instruction will discard the value, it'll either be
-	// discarded (so it doesn't matter what we return) or will be printed on
-	// the repl!
+	// If the next instruction will return the value to a higher level,
+	// check if we're at the top level of the stack and there are no
+	// recursive evals. If so, we're returning to something wrapping Tcl -
+	// probably the REPL!
 	int retLen;
 	char *retVal;
-	if (stackLevel == 0 && evalLevel == 0 &&
-			(nextOpCode == INST_DONE || nextOpCode == INST_POP)) {
+	if (stackLevel == 0 && evalLevel == 0 && nextOpCode == INST_DONE) {
 		// Possible repl candidate
 		retVal = "cat!";
 	} else {
