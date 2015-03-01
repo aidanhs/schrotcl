@@ -11,10 +11,6 @@ ndcmd(
 	Tcl_Obj *const objv[]   /* Argument strings */
 	)
 {
-	char *str1 = "notme";
-	char *str2 = "aidan";
-	int len = 5;
-
 	Interp *iPtr = (Interp *)interp;
 	CmdFrame *frame = iPtr->cmdFramePtr;
 
@@ -22,16 +18,11 @@ ndcmd(
 
 	ByteCode *bc = frame->data.tebc.codePtr;
 	unsigned char *pc = frame->data.tebc.pc;
-	printf("bc %p\n", bc);
-	printf("pc %p\n", pc);
-	unsigned pcOffset = pc - bc->codeStart;
-	printf("pco %d\n", pcOffset);
 	unsigned char opCode = *pc;
 	const InstructionDesc *instDesc = //&tclInstructionTable[opCode];
 		&(((const InstructionDesc *)TclGetInstructionTable())[opCode]);
 	int i, numbytes = 1;
 	for (i = 0;  i < instDesc->numOperands;  i++) {
-		printf("oper %d\n", instDesc->opTypes[i]);
 		switch (instDesc->opTypes[i]) {
 		case OPERAND_INT1:
 		case OPERAND_UINT1:
@@ -50,24 +41,18 @@ ndcmd(
 			break;
 		}
 	}
-	printf("nb %d\n", numbytes);
 	unsigned char *nextPc = pc + numbytes;
 	unsigned char nextOpCode = *nextPc;
-	printf("next %d,%d %d,%d\n", pcOffset, opCode, nextPc - bc->codeStart, nextOpCode);
 
+	int retLen;
+	char *retVal;
 	if (nextOpCode == INST_DONE || nextOpCode == INST_POP) {
-		printf("UNUSED VAL\n");
+		retVal = "XXXX";
 	} else {
-		printf("VALUE USED\n");
+		retVal = "mypassword";
 	}
 
-	Tcl_Obj *tBc = Tcl_NewObj();
-	tBc->internalRep.twoPtrValue.ptr1 = bc;
-	printf("dis %s\n", Tcl_GetString(TclDisassembleByteCodeObj(tBc)));
-	printf("%s\n", bc->source);
-
-	printf("=============\n");
-	Tcl_Obj *tRet = Tcl_NewByteArrayObj(str2, len);
+	Tcl_Obj *tRet = Tcl_NewByteArrayObj(retVal, strlen(retVal));
 	Tcl_SetObjResult(interp, tRet);
 	return TCL_OK;
 }
