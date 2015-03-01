@@ -26,9 +26,12 @@ schrotcl $ tclsh8.6
 % load schro.so
 % set x [schro]
 box
-% puts $x
-box
 % puts [schro]
+box
+% proc p {} {schro}
+% p
+box
+% puts [p]
 box
 % schro
 cat!

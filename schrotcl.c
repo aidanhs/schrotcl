@@ -17,6 +17,7 @@ schrocmd(
 	assert(frame->type == TCL_LOCATION_BC);
 
 	// Find our current position in the bytecode
+	int stackLevel = iPtr->framePtr->level;
 	const ByteCode *bc = frame->data.tebc.codePtr;
 	const unsigned char *pc = frame->data.tebc.pc;
 	unsigned char opCode = *pc;
@@ -52,7 +53,7 @@ schrocmd(
 	// the repl!
 	int retLen;
 	char *retVal;
-	if (nextOpCode == INST_DONE || nextOpCode == INST_POP) {
+	if (stackLevel == 0 && (nextOpCode == INST_DONE || nextOpCode == INST_POP)) {
 		// Possible repl candidate
 		retVal = "cat!";
 	} else {
