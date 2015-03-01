@@ -26,6 +26,40 @@ ndcmd(
 	printf("pc %p\n", pc);
 	unsigned pcOffset = pc - bc->codeStart;
 	printf("pco %d\n", pcOffset);
+	unsigned char opCode = *pc;
+	const InstructionDesc *instDesc = //&tclInstructionTable[opCode];
+		&(((const InstructionDesc *)TclGetInstructionTable())[opCode]);
+	int i, numbytes = 1;
+	for (i = 0;  i < instDesc->numOperands;  i++) {
+		printf("oper %d\n", instDesc->opTypes[i]);
+		switch (instDesc->opTypes[i]) {
+		case OPERAND_INT1:
+		case OPERAND_UINT1:
+		case OPERAND_LVT1:
+			numbytes++;
+			break;
+		case OPERAND_INT4:
+		case OPERAND_AUX4:
+		case OPERAND_UINT4:
+		case OPERAND_IDX4:
+		case OPERAND_LVT4:
+			numbytes += 4;
+			break;
+		case OPERAND_NONE:
+		default:
+			break;
+		}
+	}
+	printf("nb %d\n", numbytes);
+	unsigned char *nextPc = pc + numbytes;
+	unsigned char nextOpCode = *nextPc;
+	printf("next %d,%d %d,%d\n", pcOffset, opCode, nextPc - bc->codeStart, nextOpCode);
+
+	if (nextOpCode == INST_DONE || nextOpCode == INST_POP) {
+		printf("UNUSED VAL\n");
+	} else {
+		printf("VALUE USED\n");
+	}
 
 	Tcl_Obj *tBc = Tcl_NewObj();
 	tBc->internalRep.twoPtrValue.ptr1 = bc;
