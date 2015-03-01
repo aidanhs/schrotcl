@@ -19,9 +19,10 @@ $ git clone https://github.com/aidanhs/schrotcl.git
 $ cd schrotcl
 schrotcl $ make prep # needed once only
 [...]
+schrotcl $ $(make env) # whenever you open a new terminal
 schrotcl $ make # whenever you make changes
 [...]
-schrotcl $ ./tcl8.6/unix/dist/bin/tclsh8.6
+schrotcl $ tclsh8.6
 % load schro.so
 % set x [schro]
 box

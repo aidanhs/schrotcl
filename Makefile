@@ -16,3 +16,10 @@ build:
 		-fPIC -shared schrotcl.c -o schro.so \
 		-I$$TCL_SRC_DIR/generic -I$$TCL_SRC_DIR/unix \
 		$$TCL_LIB_SPEC \
+
+env:
+	@if [ "$$LD_LIBRARY_PATH" != "" ]; then \
+		PREFIX="$$LD_LIBRARY_PATH:"; \
+	fi; \
+	echo "export LD_LIBRARY_PATH=$${PREFIX}$$(pwd)/tcl8.6/unix/dist/lib"
+	@echo "export PATH=$$(pwd)/tcl8.6/unix/dist/bin:$$PATH"
