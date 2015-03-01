@@ -16,8 +16,8 @@ schrocmd(
 
 	assert(frame->type == TCL_LOCATION_BC);
 
-	ByteCode *bc = frame->data.tebc.codePtr;
-	unsigned char *pc = frame->data.tebc.pc;
+	const ByteCode *bc = frame->data.tebc.codePtr;
+	const unsigned char *pc = frame->data.tebc.pc;
 	unsigned char opCode = *pc;
 	const InstructionDesc *instDesc = //&tclInstructionTable[opCode];
 		&(((const InstructionDesc *)TclGetInstructionTable())[opCode]);
@@ -41,7 +41,7 @@ schrocmd(
 			break;
 		}
 	}
-	unsigned char *nextPc = pc + numbytes;
+	const unsigned char *nextPc = pc + numbytes;
 	unsigned char nextOpCode = *nextPc;
 
 	int retLen;
