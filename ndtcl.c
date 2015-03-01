@@ -60,9 +60,9 @@ ndcmd(
 int
 _Ndtcl_Init(Tcl_Interp *interp)
 {
-	if (Tcl_InitStubs(interp, "8.5", 0) == NULL)
+	if (Tcl_InitStubs(interp, "8.6", 0) == NULL)
 		return TCL_ERROR;
-	if (Tcl_PkgRequire(interp, "Tcl", "8.5", 0) == NULL)
+	if (Tcl_PkgRequire(interp, "Tcl", "8.6", 0) == NULL)
 		return TCL_ERROR;
 	if (Tcl_PkgProvide(interp, "nd", "0.1") != TCL_OK)
 		return TCL_ERROR;
