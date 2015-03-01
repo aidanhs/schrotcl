@@ -16,9 +16,11 @@ schrocmd(
 
 	assert(frame->type == TCL_LOCATION_BC);
 
+	// Find our current position in the bytecode
 	const ByteCode *bc = frame->data.tebc.codePtr;
 	const unsigned char *pc = frame->data.tebc.pc;
 	unsigned char opCode = *pc;
+	// Find how big this instruction is
 	const InstructionDesc *instDesc = //&tclInstructionTable[opCode];
 		&(((const InstructionDesc *)TclGetInstructionTable())[opCode]);
 	int i, numbytes = 1;
@@ -41,15 +43,21 @@ schrocmd(
 			break;
 		}
 	}
+	// Go to the next instruction
 	const unsigned char *nextPc = pc + numbytes;
 	unsigned char nextOpCode = *nextPc;
 
+	// If the next instruction will discard the value, it'll either be
+	// discarded (so it doesn't matter what we return) or will be printed on
+	// the repl!
 	int retLen;
 	char *retVal;
 	if (nextOpCode == INST_DONE || nextOpCode == INST_POP) {
-		retVal = "XXXX";
+		// Possible repl candidate
+		retVal = "cat!";
 	} else {
-		retVal = "mypassword";
+		// Value could be used...
+		retVal = "box";
 	}
 
 	Tcl_Obj *tRet = Tcl_NewByteArrayObj(retVal, strlen(retVal));
