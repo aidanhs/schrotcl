@@ -55,7 +55,7 @@ schrocmd(
 	// probably the REPL!
 	int retLen;
 	char *retVal;
-	if (stackLevel == 0 && evalLevel == 0 && nextOpCode == INST_DONE) {
+	if (stackLevel == 0 && evalLevel == 1 && nextOpCode == INST_DONE) {
 		// Possible repl candidate
 		retVal = "cat!";
 	} else {
