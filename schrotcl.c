@@ -4,7 +4,7 @@
 #include "tclCompile.h"
 
 static int
-ndcmd(
+schrocmd(
 	ClientData clientData,  /* Not used. */
 	Tcl_Interp *interp,     /* Current interpreter */
 	int objc,               /* Number of arguments */
@@ -58,17 +58,17 @@ ndcmd(
 }
 
 int
-_Ndtcl_Init(Tcl_Interp *interp)
+Schro_Init(Tcl_Interp *interp)
 {
 	if (Tcl_InitStubs(interp, "8.6", 0) == NULL)
 		return TCL_ERROR;
 	if (Tcl_PkgRequire(interp, "Tcl", "8.6", 0) == NULL)
 		return TCL_ERROR;
-	if (Tcl_PkgProvide(interp, "nd", "0.1") != TCL_OK)
+	if (Tcl_PkgProvide(interp, "schro", "0.1") != TCL_OK)
 		return TCL_ERROR;
 
-	Tcl_Command cmd = Tcl_CreateObjCommand(interp, "nd",
-		(Tcl_ObjCmdProc *) ndcmd, (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
+	Tcl_Command cmd = Tcl_CreateObjCommand(interp, "schro",
+		(Tcl_ObjCmdProc *) schrocmd, (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
 	if (cmd == NULL)
 		return TCL_ERROR;
 

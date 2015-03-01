@@ -1,6 +1,6 @@
-load ./ndtcl.so
+load ./schro.so
 proc b {} {
-puts [nd]
+puts [schro]
 expr {0}
 }
 b
