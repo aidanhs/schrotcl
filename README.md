@@ -33,6 +33,8 @@ box
 box
 % puts [p]
 box
+% eval schro
+box
 % schro
 cat!
 ```
