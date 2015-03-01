@@ -1,6 +1,15 @@
-.PHONY: default
+.PHONY: prep build default
 
-default:
+default: build
+
+prep:
+	git submodule init
+	git submodule update
+	cd tcl8.6/unix && ./configure --prefix=$$(pwd)/dist
+	cd tcl8.6/unix && make
+	cd tcl8.6/unix && make install
+
+build:
 	(\
 		. tcl8.6/unix/dist/lib/tclConfig.sh && \
 		gcc \
