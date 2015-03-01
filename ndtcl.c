@@ -16,53 +16,22 @@ ndcmd(
 	int len = 5;
 
 	Interp *iPtr = (Interp *)interp;
+	CmdFrame *frame = iPtr->cmdFramePtr;
 
-	printf("objc %d\n", objc);
-	printf("cmdframe %p\n", iPtr->cmdFramePtr);
-	printf("icmdframe %p\n", iPtr->invokeCmdFramePtr);
-	printf("nline %d\n", iPtr->cmdFramePtr->nline);
-	assert(iPtr->cmdFramePtr->type == TCL_LOCATION_BC);
-	printf("objc %d\n", iPtr->framePtr->objc);
-	//printf("1 %s\n", Tcl_GetString(iPtr->execEnvPtr->constants[1]));
-	printf("e %p\n", iPtr->execEnvPtr->execStackPtr->stackWords[1]);
+	assert(frame->type == TCL_LOCATION_BC);
 
-	printf("bc %p\n", iPtr->cmdFramePtr->data.tebc.codePtr);
-	printf("pc %p\n", iPtr->cmdFramePtr->data.tebc.pc);
-	ByteCode *bc = iPtr->cmdFramePtr->data.tebc.codePtr;
+	ByteCode *bc = frame->data.tebc.codePtr;
+	unsigned char *pc = frame->data.tebc.pc;
+	printf("bc %p\n", bc);
+	printf("pc %p\n", pc);
+	unsigned pcOffset = pc - bc->codeStart;
+	printf("pco %d\n", pcOffset);
+
 	Tcl_Obj *tBc = Tcl_NewObj();
 	tBc->internalRep.twoPtrValue.ptr1 = bc;
 	printf("dis %s\n", Tcl_GetString(TclDisassembleByteCodeObj(tBc)));
 	printf("%s\n", bc->source);
 
-	//printf("lineLAPtr %p\n", iPtr->lineLAPtr);
-	//Tcl_HashEntry *he = NULL;
-	////Tcl_HashEntry *he = Tcl_FindHashEntry(iPtr->lineLAPtr, objv[1]);
-	////printf("n %p\n", he);
-	//Tcl_HashSearch searchPtr;
-	////he = Tcl_FirstHashEntry(iPtr->lineLAPtr, &searchPtr);
-	//he = Tcl_FirstHashEntry(iPtr->lineBCPtr, &searchPtr);
-	//printf("n %p\n", he);
-	////CFWord* cfw = Tcl_GetHashValue(he);
-	////printf("pos %d\n", cfw->word);
-
-	//NRE_callback *cb = iPtr->execEnvPtr->callbackPtr;
-	////NRE_callback *cb = iPtr->deferredCallbacks;
-	//int i = 0;
-	//while (1) {
-	//	if (cb == NULL)
-	//		break;
-	//	printf("cb %p %p %p %p %p\n",
-	//		cb, cb->data[0], cb->data[1], cb->data[2], cb->data[3]);
-	//	printf("> %d\n", PTR2INT(cb->data[0]));
-	//	if (i == 1) {
-	//		const Tcl_Obj **objv = cb->data[0];
-	//		printf("> %p\n", objv);
-	//		printf("> %d\n", objv[0]->refCount);
-	//		//printf("> %s\n", Tcl_GetString(objv[0]));
-	//	}
-	//	i += 1;
-	//	cb = cb->nextPtr;
-	//}
 	printf("=============\n");
 	Tcl_Obj *tRet = Tcl_NewByteArrayObj(str2, len);
 	Tcl_SetObjResult(interp, tRet);
