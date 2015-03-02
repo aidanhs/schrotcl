@@ -6,10 +6,18 @@ that the one thing missing from Tcl was a way of making return values differ
 depending on whether you look at them.
 
 So schrotcl demonstrates a way of returning a *different value* from a C command
-in Tcl depending on whether Tcl is actually going to process the value in any,
-or whether it's going to go straight to the REPL output!
+in Tcl depending on whether Tcl is actually going to process the value in any
+way, or whether it's going to go straight to the REPL output!
 
-(obviously you should never do this)
+In short, let's try and make these two calls print different things:
+```
+% puts [schro]
+output1
+% schro
+output2
+```
+
+(obviously this is a terrible idea)
 
 Demo
 ----
